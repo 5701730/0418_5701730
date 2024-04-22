@@ -11,13 +11,14 @@ typedef struct Stacktype {
     int top;
 } StackType;
 
-void init(StackType* sptr, int ofs) {
+void init(StackType* sptr, int ofs) {// 스택 초기화 함수
+
     sptr->data = (element*)malloc(sizeof(StackType) * ofs);
     sptr->top = -1;
     sptr->capacity = ofs;
 }
 
-int is_full(StackType* sptr) {
+int is_full(StackType* sptr) {// 스택이 가득 찼는지 확인하는 함수
     if (sptr->top == sptr->capacity - 1) {
         sptr->capacity *= 2;
         sptr->data = (element*)realloc(sptr->data, sptr->capacity * sizeof(element));
@@ -25,11 +26,11 @@ int is_full(StackType* sptr) {
     return 0;
 }
 
-int is_empty(StackType* sptr) {
+int is_empty(StackType* sptr) {// 스택이 비어있는지 확인하는 함수
     return (sptr->top == -1);
 }
 
-void push(StackType* sptr, element item) {
+void push(StackType* sptr, element item) {// 스택에 요소를 추가하는 함수
     if (is_full(sptr)) {
         fprintf(stderr, "Stack is full\n");
         return;
@@ -37,7 +38,7 @@ void push(StackType* sptr, element item) {
     sptr->data[++sptr->top] = item;
 }
 
-element pop(StackType* sptr) {
+element pop(StackType* sptr) {// 스택에서 요소를 제거하고 반환하는 함수
     if (is_empty(sptr)) {
         fprintf(stderr, "stack is empty\n");
         return -1;
@@ -45,7 +46,7 @@ element pop(StackType* sptr) {
     return sptr->data[sptr->top--];
 }
 
-element peek(StackType* sptr) {
+element peek(StackType* sptr) {// 스택의 top 요소를 반환하는 함수
     if (is_empty(sptr)) {
         fprintf(stderr, "stack is empty\n");
         return -1;
@@ -53,15 +54,15 @@ element peek(StackType* sptr) {
     return sptr->data[sptr->top];
 }
 
-bool is_operator(char c) {
+bool is_operator(char c) {//연산자 확인함수
     return (c == '+' || c == '-' || c == '*' || c == '/');
 }
 
-bool is_operand(char c) {
+bool is_operand(char c) {//피연산자 확인함수
     return (c >= '0' && c <= '9');
 }
 
-int prec(char op) {
+int prec(char op) {//연산자들 우선순위 반환하느 함수
     if (op == '+' || op == '-')
         return 1;
     if (op == '*' || op == '/')
@@ -69,7 +70,7 @@ int prec(char op) {
     return 0;
 }
 
-void infix_to_postfix(char* infix, char* postfix) {
+void infix_to_postfix(char* infix, char* postfix) {//중위식->후위식
     StackType s;
     init(&s, 10);
     int i = 0, j = 0;
